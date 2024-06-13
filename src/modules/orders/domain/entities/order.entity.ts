@@ -1,12 +1,15 @@
+import {
+  Product,
+} from '../../../products/domain/entities';
 
 export class Order {
     public id: string;
     public clientName: string;
     public total: number;
-    public productList: string[]; 
+    public productList: Product[] | string[]; 
     public createdAt: Date = new Date();
   
-    constructor(id: string, clientName: string, total: number, productList: string[]) {
+    constructor(id: string, clientName: string, total: number, productList: Product[] | string[]) {
         this.id = id;
         this.clientName = clientName;
         this.total = total;
@@ -25,7 +28,7 @@ export class Order {
         return this.createdAt;
       }
   
-    public getProductList(): string[] {
+    public getProductList(): Product[] | string[] {
       return this.productList;
     }
   

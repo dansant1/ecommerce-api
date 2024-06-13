@@ -1,5 +1,3 @@
-// src/auth/application/dtos/signup.dto.ts
-
 import { IsString, MinLength, MaxLength } from 'class-validator';
 
 export class SignupDto {

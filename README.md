@@ -112,15 +112,13 @@ POST /api/v1/products
 
 **Example:**
 ```bash
-curl -X POST http://localhost:3000/api/v1/products \
--H "Content-Type: application/json" \
+curl --location 'http://localhost:3000/api/v1/products' \
+-H 'Content-Type: application/json' \
 -H 'Authorization: ••••••' \
--d '{
-  "name": "Product Name",
-  "sku": "SKU001",
-  "price": 100,
-  "picture": "path/to/picture.jpg"
-}'
+-F 'picture=@"/C:/Users/danie/Downloads/cex-image-1717448719678882c2a78354d5ac0462ff877.48224109.png"' \
+-F 'name="product 10"' \
+-F 'sku="SKU12346"' \
+-F 'price="254"'
 ```
 
 #### Get a Product by SKU

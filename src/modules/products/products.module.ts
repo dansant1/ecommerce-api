@@ -7,7 +7,6 @@ import {
   ProductRepositoryImpl
 } from './infrastructure/repositories/product.repository';
 
-
 @Module({
     imports: [
       MongooseModule

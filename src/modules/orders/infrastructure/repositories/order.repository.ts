@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { OrderDocument } from '../schemas';
-import { Order } from '../../entities';
+import { Order } from '../../domain/entities';
 import { OrderRepository } from '../../domain/repositories';
+import {
+  Product,
+} from '../../../products/domain/entities';
 
 @Injectable()
 export class OrderRepositoryImpl implements OrderRepository {
@@ -64,11 +67,48 @@ export class OrderRepositoryImpl implements OrderRepository {
     return this.mapDocumentToEntity(result);
   }
 
+  async findAllWithProductDetails(): Promise<Order[]> {
+    console.log("init");
+    const orderDocuments = await this.orderModel
+      .find()
+      .populate('productList')
+      .exec();
+    return orderDocuments.map(orderDocument => this.mapDocumentToEntityList(orderDocument));
+  }
+
   private mapDocumentToEntity(orderDocument: OrderDocument): Order {
     if (!orderDocument) {
       return null;
     }
     const { clientName, total, productList, _id } = orderDocument;
-    return new Order(_id as string, clientName, total, productList);
+    return new Order(_id as string, clientName, total, productList as unknown as string[]);
+  }
+
+  private mapDocumentToEntityList(orderDocument: OrderDocument): Order {
+    if (!orderDocument) {
+      return null;
+    }
+    const { clientName, total, _id } = orderDocument;
+
+    let productList: any[] = [];
+    if (Array.isArray(orderDocument.productList)) {
+      productList = orderDocument.productList;
+    } else if (orderDocument.productList) {
+      productList = [orderDocument.productList];
+    }
+
+    if (!productList.length) {
+      return new Order(_id.toString(), clientName, total, []);
+    }
+
+    const formattedProductList = productList.map((product) => ({
+      id: product._id.toString(),
+      name: product.name,
+      sku: product.sku,
+      price: product.price,
+      picture: product.picture,
+    }));
+
+    return new Order(_id.toString(), clientName, total, formattedProductList as Product[]);
   }
 }

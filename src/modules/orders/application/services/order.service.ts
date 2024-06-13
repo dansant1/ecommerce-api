@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { OrderRepository } from '../../domain/repositories';
-import { Order } from '../../entities';
+import { Order } from '../../domain/entities';
 
 @Injectable()
 export class OrderService {
@@ -9,8 +9,12 @@ export class OrderService {
     ) {}
 
     async createOrder(clientName: string, total: number, productList: string[]): Promise<Order> {
-      const order = new Order(null, clientName, total, productList);
+      const order = new Order(null, clientName, total, productList as string[]);
       return this.orderRepository.create(order);
+    }
+
+    async findAllWithProductDetails() {
+      return this.orderRepository.findAllWithProductDetails();
     }
 
     async findOrderById(id: string): Promise<Order> {
@@ -20,7 +24,7 @@ export class OrderService {
     async updateOrder(id: string, clientName: string, total: number, productList: string[]): Promise<Order> {
       const existingOrder = await this.orderRepository.findById(id);
       if (!existingOrder) {
-        throw new Error(`Order with id ${id} not found`);
+        throw new HttpException(`Order with id ${id} not found`, HttpStatus.NOT_FOUND);
       }
 
       // Update order fields

@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Put, Body, Param, UseGuards } from '@nestjs/common';
 import { OrderService } from '../services/order.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { Order } from '../../entities';
-import { JwtAuthGuard } from '../../../auth/shared';
+import { Order } from '../../domain/entities';
+import { JwtAuthGuard } from '../../../auth/infrastructure';
 
 @Controller('orders')
 export class OrderController {
@@ -14,6 +14,13 @@ export class OrderController {
       const { clientName, total, productList } = createOrderDto;
       return this.orderService.createOrder(clientName, total, productList);
     }   
+
+    
+    @Get()
+    @UseGuards(JwtAuthGuard)
+    async findAllWithProductDetails(): Promise<Order[]> {
+      return this.orderService.findAllWithProductDetails();
+    }
     
     @Put(':id')
     @UseGuards(JwtAuthGuard)

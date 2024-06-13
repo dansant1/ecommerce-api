@@ -1,7 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-@Schema()
+import { Document, Types } from 'mongoose';
+import {
+  ProductSchema,
+  ProductDocument,
+} from '../../../products/infrastructure/schemas';
+@Schema({ collection: 'Orders' })
 export class OrderDocument extends Document {
   @Prop({ required: true })
   clientName: string;
@@ -9,8 +12,8 @@ export class OrderDocument extends Document {
   @Prop({ required: true })
   total: number;
 
-  @Prop({ required: true })
-  productList: string[];
+  @Prop({ type: Types.ObjectId, ref: ProductDocument.name, required: true })
+  productList: Types.ObjectId[];
 
   @Prop({ default: Date.now })
   createdAt: Date;

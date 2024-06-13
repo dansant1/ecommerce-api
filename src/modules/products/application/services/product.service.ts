@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProductDto } from '../dto';
 import { ProductRepository } from '../../domain/repositories';
 import { SKU } from '../../domain/value-objects';
-import { Product } from '../../entities';
+import { Product } from '../../domain/entities';
 
 @Injectable()
 export class ProductService {
@@ -10,9 +10,9 @@ export class ProductService {
     @Inject('ProductRepository') private readonly productRepository: ProductRepository
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const { name, sku, price, picture } = createProductDto;
-    const product = new Product('', name, new SKU(sku), price, picture);
+  async create(createProductDto: CreateProductDto, picturePath: string): Promise<Product> {
+    const { name, sku, price } = createProductDto;
+    const product = new Product('', name, new SKU(sku), price, picturePath);
     try {
       const result = await this.productRepository.save(product);     
       return result
@@ -22,6 +22,10 @@ export class ProductService {
   }
 
   async findOne(sku: string): Promise<Product | null> {
-    return this.productRepository.findBySKU(sku);
+    const prodct = await this.productRepository.findBySKU(sku);
+    if (!prodct) {
+      throw new HttpException(`product with ${sku} not found`, HttpStatus.NOT_FOUND);
+    }
+    return prodct;
   }
 }

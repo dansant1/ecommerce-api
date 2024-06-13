@@ -1,4 +1,4 @@
-import { Order } from '../../entities';
+import { Order } from '../entities';
 
 export interface OrderRepository {
   create(order: Order): Promise<Order>;
@@ -7,4 +7,5 @@ export interface OrderRepository {
   delete(id: string): Promise<void>;
   getTotalSoldPriceLastMonth(): Promise<number>;
   getHighestAmountOrder(): Promise<Order>;
+  findAllWithProductDetails(): Promise<Order[]> 
 }

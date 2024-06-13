@@ -1,6 +1,7 @@
-import { SKU } from '../domain/value-objects';
+import { SKU } from '../value-objects';
 
 export class Product {
+  public _id: string;
   constructor(
     public readonly id: string,
     public readonly name: string,

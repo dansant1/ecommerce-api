@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductRepository } from '../../domain/repositories';
-import { Product } from '../../entities';
+import { Product } from '../../domain/entities';
 import { ProductDocument } from '../schemas';
 import { SKU } from '../../domain/value-objects';
 
@@ -23,10 +23,10 @@ export class ProductRepositoryImpl implements ProductRepository {
         const result = await createdProduct.save();
         return new Product(result.id, result.name, new SKU(result.sku), result.price, result.picture);
       } catch (error) {
-        if (error.code === 11000) { // Mongoose error code for duplicate key
+        if (error.code === 11000) { 
           throw new Error(`SKU '${product.sku.getValue()}' already exists.`);
         }
-        throw error; // Rethrow other unexpected errors
+        throw error; 
       }
         
     }
