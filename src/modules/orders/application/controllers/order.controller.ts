@@ -34,6 +34,7 @@ export class OrderController {
     }   
 
     @Get('/highest-amount-order')
+    @UseGuards(JwtAuthGuard)
     async getHighestAmountOrder(): Promise<Order> {
       return this.orderService.getHighestAmountOrder();
     }

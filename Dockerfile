@@ -10,6 +10,9 @@ RUN npm install -g @nestjs/cli
 # Copiar los archivos de package.json y package-lock.json
 COPY package*.json ./
 
+# Instalar las dependencias incluyendo bcryptjs
+RUN npm install bcryptjs
+
 # Instalar las dependencias
 RUN npm install
 

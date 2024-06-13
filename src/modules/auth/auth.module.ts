@@ -7,6 +7,9 @@ import { AuthController } from './application/controllers/auth.controller';
 import { AuthService } from './application/services/auth.service';
 import { AuthRepositoryImpl } from './infrstructure/repositories';
 import { UserSchema } from './infrstructure/schemas';
+import {
+  JwtStrategy,
+} from './shared/jwt.strategy';
 
 @Module({
   imports: [
@@ -25,6 +28,7 @@ import { UserSchema } from './infrstructure/schemas';
   exports: [PassportModule, JwtModule], 
   providers: [
     AuthService,
+    JwtStrategy,
     {
         provide: 'AuthRepository',
         useClass: AuthRepositoryImpl,

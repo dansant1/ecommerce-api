@@ -114,6 +114,7 @@ POST /api/v1/products
 ```bash
 curl -X POST http://localhost:3000/api/v1/products \
 -H "Content-Type: application/json" \
+-H 'Authorization: ••••••' \
 -d '{
   "name": "Product Name",
   "sku": "SKU001",
@@ -142,7 +143,8 @@ GET /api/v1/products/:sku
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/api/v1/products/SKU001
+curl -X GET http://localhost:3000/api/v1/products/SKU001 \
+-H 'Authorization: ••••••' \
 ```
 
 ### Orders
@@ -174,6 +176,7 @@ POST /api/v1/orders
 ```bash
 curl -X POST http://localhost:3000/api/v1/orders \
 -H "Content-Type: application/json" \
+-H 'Authorization: ••••••' \
 -d '{
   "clientName": "Client Name",
   "total": 200,
@@ -208,6 +211,7 @@ PUT /api/v1/orders/:id
 ```bash
 curl -X PUT http://localhost:3000/api/v1/orders/order_id \
 -H "Content-Type: application/json" \
+-H 'Authorization: ••••••' \
 -d '{
   "clientName": "Updated Client Name",
   "total": 300,
@@ -229,7 +233,8 @@ GET /api/v1/orders/total-sold-price-last-month
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/api/v1/orders/total-sold-price-last-month
+curl -X GET http://localhost:3000/api/v1/orders/total-sold-price-last-month \
+-H 'Authorization: ••••••' \
 ```
 
 #### Get the Highest Amount Order
@@ -249,7 +254,8 @@ GET /api/v1/orders/highest-amount-order
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/api/v1/orders/highest-amount-order
+curl -X GET http://localhost:3000/api/v1/orders/highest-amount-order \
+-H 'Authorization: ••••••' \
 ```
 
 # Cleaning
