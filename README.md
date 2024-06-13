@@ -45,7 +45,7 @@ This will start the MongoDB and the NestJS application. The API will be availabl
 
 #### Login
 ```
-POST /auth/login
+POST /api/v1/auth/login
 ```
 **Input:**
 ```json
@@ -66,7 +66,7 @@ POST /auth/login
 
 #### Create a Product
 ```
-POST /products
+POST /api/v1/products
 ```
 **Input:**
 ```json
@@ -93,7 +93,7 @@ POST /products
 
 **Example:**
 ```bash
-curl -X POST http://localhost:3000/products \
+curl -X POST http://localhost:3000/api/v1/products \
 -H "Content-Type: application/json" \
 -d '{
   "name": "Product Name",
@@ -105,7 +105,7 @@ curl -X POST http://localhost:3000/products \
 
 #### Get a Product by SKU
 ```
-GET /products/:sku
+GET /api/v1/products/:sku
 ```
 
 **Output:**
@@ -123,14 +123,14 @@ GET /products/:sku
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/products/SKU001
+curl -X GET http://localhost:3000/api/v1/products/SKU001
 ```
 
 ### Orders
 
 #### Create an Order
 ```
-POST /orders
+POST /api/v1/orders
 ```
 **Input:**
 ```json
@@ -153,7 +153,7 @@ POST /orders
 
 **Example:**
 ```bash
-curl -X POST http://localhost:3000/orders \
+curl -X POST http://localhost:3000/api/v1/orders \
 -H "Content-Type: application/json" \
 -d '{
   "clientName": "Client Name",
@@ -164,7 +164,7 @@ curl -X POST http://localhost:3000/orders \
 
 #### Update an Order
 ```
-PUT /orders/:id
+PUT /api/v1/orders/:id
 ```
 **Input:**
 ```json
@@ -187,7 +187,7 @@ PUT /orders/:id
 
 **Example:**
 ```bash
-curl -X PUT http://localhost:3000/orders/order_id \
+curl -X PUT http://localhost:3000/api/v1/orders/order_id \
 -H "Content-Type: application/json" \
 -d '{
   "clientName": "Updated Client Name",
@@ -198,7 +198,7 @@ curl -X PUT http://localhost:3000/orders/order_id \
 
 #### Get Total Sold Price in the Last Month
 ```
-GET /orders/total-sold-price-last-month
+GET /api/v1/orders/total-sold-price-last-month
 ```
 
 **Output:**
@@ -210,12 +210,12 @@ GET /orders/total-sold-price-last-month
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/orders/total-sold-price-last-month
+curl -X GET http://localhost:3000/api/v1/orders/total-sold-price-last-month
 ```
 
 #### Get the Highest Amount Order
 ```
-GET /orders/highest-amount-order
+GET /api/v1/orders/highest-amount-order
 ```
 
 **Output:**
@@ -230,7 +230,7 @@ GET /orders/highest-amount-order
 
 **Example:**
 ```bash
-curl -X GET http://localhost:3000/orders/highest-amount-order
+curl -X GET http://localhost:3000/api/v1/orders/highest-amount-order
 ```
 
 ## Future Improvements
