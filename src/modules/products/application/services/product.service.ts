@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProductDto } from '../dto';
 import { ProductRepository } from '../../domain/repositories';
 import { SKU } from '../../domain/value-objects';
@@ -13,7 +13,12 @@ export class ProductService {
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const { name, sku, price, picture } = createProductDto;
     const product = new Product('', name, new SKU(sku), price, picture);
-    return this.productRepository.save(product);
+    try {
+      const result = await this.productRepository.save(product);     
+      return result
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findOne(sku: string): Promise<Product | null> {

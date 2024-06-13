@@ -13,6 +13,7 @@ export class ProductRepositoryImpl implements ProductRepository {
     ) {}
 
     async save(product: Product): Promise<Product> {
+      try {
         const createdProduct = new this.productModel({
           name: product.name,
           sku: product.sku.getValue(),
@@ -21,6 +22,13 @@ export class ProductRepositoryImpl implements ProductRepository {
         });
         const result = await createdProduct.save();
         return new Product(result.id, result.name, new SKU(result.sku), result.price, result.picture);
+      } catch (error) {
+        if (error.code === 11000) { // Mongoose error code for duplicate key
+          throw new Error(`SKU '${product.sku.getValue()}' already exists.`);
+        }
+        throw error; // Rethrow other unexpected errors
+      }
+        
     }
 
     async findById(id: string): Promise<Product | null> {

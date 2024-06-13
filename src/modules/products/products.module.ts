@@ -7,13 +7,14 @@ import {
   ProductRepositoryImpl
 } from './infrastructure/repositories/product.repository';
 
+
 @Module({
     imports: [
       MongooseModule
       .forFeature([{ 
           name: ProductDocument.name, 
           schema: ProductSchema 
-      }])
+      }]),
     ],
     controllers: [ProductController],
     providers: [
@@ -23,7 +24,7 @@ import {
         useClass: ProductRepositoryImpl,
     },
     ],
-    //exports: [ProductService] 
+   
 })
 export class ProductModule {};
 
