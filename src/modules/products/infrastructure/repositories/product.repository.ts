@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ProductRepository } from '../../domain/repositories';
 import { Product } from '../../domain/entities';
 import { ProductDocument } from '../schemas';
@@ -11,6 +11,19 @@ export class ProductRepositoryImpl implements ProductRepository {
     constructor(
         @InjectModel(ProductDocument.name) private productModel: Model<ProductDocument>
     ) {}
+
+    async validateIdsExists(productList: string[]): Promise<void> {
+      const invalidIds = productList.filter(productId => !Types.ObjectId.isValid(productId as string));
+      if (invalidIds.length > 0) {
+        throw new BadRequestException(`Invalid product IDs: ${invalidIds.join(', ')}`);
+      }
+      const products = await this.productModel.find({ _id: { $in: productList } }).exec();
+      if (products.length !== productList.length) {
+        const existingIds = products.map(product => product._id.toString());
+        const missingIds = productList.filter(id => !existingIds.includes(id));
+        throw new NotFoundException(`Products not found: ${missingIds.join(', ')}`);
+      }
+    }
 
     async save(product: Product): Promise<Product> {
       try {

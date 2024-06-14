@@ -21,9 +21,14 @@ import {
       {
         provide: 'ProductRepository',
         useClass: ProductRepositoryImpl,
-    },
+      },
     ],
-   
+    exports: [
+      {
+        provide: 'ProductRepository',
+        useClass: ProductRepositoryImpl,
+      },
+    ]
 })
 export class ProductModule {};
 

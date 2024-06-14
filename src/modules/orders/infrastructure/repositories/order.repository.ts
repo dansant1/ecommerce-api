@@ -1,33 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { OrderDocument } from '../schemas';
 import { Order } from '../../domain/entities';
 import { OrderRepository } from '../../domain/repositories';
 import {
   Product,
 } from '../../../products/domain/entities';
+import { ProductRepository } from '../../../products/domain/repositories';
 
 @Injectable()
 export class OrderRepositoryImpl implements OrderRepository {
   constructor(
     @InjectModel(OrderDocument.name) private readonly orderModel: Model<OrderDocument>,
+    @Inject('ProductRepository') private readonly productRepository: ProductRepository,
+
   ) {}
 
   async create(order: Order): Promise<Order> {
+    const { productList } = order;
+    await this.productRepository.validateIdsExists(productList as string[]);
     const createdOrder = new this.orderModel(order);
     const orderDocument = await createdOrder.save();
     return this.mapDocumentToEntity(orderDocument);
   }
 
   async findById(id: string): Promise<Order> {
-    const orderDocument = await this.orderModel.findById(id).exec();
+    const orderDocument = await this.orderModel
+    .findById(id)
+    .exec();
     return this.mapDocumentToEntity(orderDocument);
   }
 
   async update(order: Order): Promise<Order> {
-    const { id, ...updateData } = order;
-    const updatedOrder = await this.orderModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    const { id, productList, ...updateData } = order;
+    await this.productRepository.validateIdsExists(productList as string[]);
+    const updatedOrder = await this.orderModel.findByIdAndUpdate(id, {
+      ...updateData,
+      productList
+    }, { new: true }).exec();
     return this.mapDocumentToEntity(updatedOrder);
   }
 

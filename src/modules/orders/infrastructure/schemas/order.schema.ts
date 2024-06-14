@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import {
-  ProductSchema,
   ProductDocument,
 } from '../../../products/infrastructure/schemas';
 @Schema({ collection: 'Orders' })

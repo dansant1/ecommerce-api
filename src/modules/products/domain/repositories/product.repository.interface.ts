@@ -4,4 +4,5 @@ export interface ProductRepository {
   save(product: Product): Promise<Product>;
   findById(id: string): Promise<Product | null>;
   findBySKU(sku: string): Promise<Product | null>;
+  validateIdsExists(productList: string[]): Promise<void>;
 }
